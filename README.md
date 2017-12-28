@@ -1,2 +1,5 @@
 # docker-install-utils
-Scripts for docker installing
+
+Scripts para instalação facilitada do docker
+
+Scripts for docker easy installing
