@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# Garantindo que o curl esteja instalado...
+# Ensuring that curl is installed...
+
+if [! which curl]
+then
+    apt-get install curl
+fi
+
 # Removendo as versões anteriores do docker
 # Removing all older docker versions
 
@@ -57,7 +65,7 @@ echo "Ativando docker..."
 systemctl start docker
 
 # Pergunta se deseja ativar o docker assim que iniciar o sistema e ativa caso sim
-# Asks if user want to start docker on OS boot and activate it case yes
+# Asks if user want to start docker on OS boot and activates it in case of yes
 
 while true; do
 read -p "Você deseja ativar o docker assim que o sistema iniciar?" sn
