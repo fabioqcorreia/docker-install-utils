@@ -70,7 +70,7 @@ systemctl start docker
 while true; do
 read -p "Você deseja ativar o docker assim que o sistema iniciar?" sn
     case $sn in
-        [Ss]* ) systemctl enable docker; break;;
+        [SsYy]* ) systemctl enable docker; break;;
         [Nn]* ) exit;;
         * ) echo "Por favor, apenas sim ou não.";;
     esac
@@ -78,16 +78,16 @@ done
 
 # Verifica se o grupo docker existe, se não, cria o grupo
 # Verifies if docker group exists, if not, creates it
+# Adiciona o usuário ao grupo do docker, permitindo execução dos comandos sem usar sudo
+# Adds the user to docker group, allowing docker commands execution without needing sudo
 
 echo "Configurando docker..."
 if ! grep -q docker /etc/group
 then
     groupadd docker
+    usermod -aG docker $USER
 fi
 
-# Adiciona o usuário ao grupo do docker, permitindo execução dos comandos sem usar sudo
-# Adds the user to docker group, allowing docker commands execution without needing sudo
-
-usermod -aG docker $USER
-
 echo "Docker instalado com sucesso!"
+echo "Reiniciando máquina para concluir instalação em 3 segundos..."
+reboot -f
