@@ -42,30 +42,27 @@ yum install docker-ce -yq
 echo "Ativando docker..."
 systemctl start docker
 
-# Escolha de ativar o docker assim que iniciar o sistema
-# Asks if user wants to start docker on system boot
-
 while true; do
 read -p "Você deseja ativar o docker assim que o sistema iniciar?" sn
     case $sn in
-        [Ss]* ) systemctl enable docker; break;;
+        [SsYy]* ) systemctl enable docker; break;;
         [Nn]* ) exit;;
         * ) echo "Por favor, apenas sim ou não.";;
     esac
 done
 
-# Verifica se o grupo docker já existe no /etc/group, se não, cria o grupo
-# Verifies if docker group already exists, if not, creates the docker group
+# Verifica se o grupo docker existe, se não, cria o grupo
+# Verifies if docker group exists, if not, creates it
+# Adiciona o usuário ao grupo do docker, permitindo execução dos comandos sem usar sudo
+# Adds the user to docker group, allowing docker commands execution without needing sudo
 
 echo "Configurando docker..."
 if ! grep -q docker /etc/group
 then
     groupadd docker
+    usermod -aG docker $USER
 fi
 
-# Adiciona o usuário atual ao grupo docker para permitir execução dos comandos sem precisar do sudo
-# Adds current user to docker group to enable docker command execution without sudo
-
-usermod -aG docker $USER
-
 echo "Docker instalado com sucesso!"
+echo "Reiniciando máquina para concluir instalação em 3 segundos..."
+reboot -f
